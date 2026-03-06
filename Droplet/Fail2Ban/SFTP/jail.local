@@ -1,0 +1,48 @@
+[DEFAULT]
+# -----------------------------------------------
+# Global allowlist - these IPs will NEVER be banned
+# Add your known SFTP clients, monitoring systems, VPN exits, etc.
+# Supports single IPs, CIDR ranges, and DNS names
+# -----------------------------------------------
+ignoreip = 127.0.0.1/8 ::1
+           45.10.101.131       
+           104.250.186.148   
+           159.65.214.39
+           51.132.255.227
+           10.106.0.4/32 
+           10.106.0.6/32 
+           104.250.186.148/32 
+           144.126.192.213/32 
+           144.126.229.191/32 
+           159.65.214.39/32 
+           209.38.169.43/32 
+           51.104.47.127/32
+
+# Ban duration - start with 1 hour, increase if noise persists
+bantime  = 1h
+
+# Time window in which maxretry must occur
+findtime = 10m
+
+# Number of failures before banning
+maxretry = 5
+
+# Increase ban time for repeat offenders (requires fail2ban >= 0.11)
+bantime.increment   = true
+bantime.multiplier  = 2        
+bantime.maxtime     = 1w       
+
+# How fail2ban communicates with the firewall
+# use 'iptables-multiport' if not using ufw
+banaction = ufw                
+
+[sshd]
+enabled  = true
+port     = ssh
+logpath  = %(sshd_log)s
+backend  = systemd             
+
+# Tighter settings for SSH specifically
+maxretry = 3                   
+findtime = 5m
+bantime  = 2h
